@@ -2,20 +2,20 @@
 
 const countObjects = 25;
 const likeValues = {
-    MIN: 15,
-    MAX: 200,
+    MIN:15,
+    MAX:200,
 };
 const avatarValues = {
-    MIN: 1,
-    MAX: 6,
+    MIN:1,
+    MAX:6,
 };
 const commentId = {
-    MIN: 1,
-    MAX: 100,
+    MIN:1,
+    MAX:100,
 };
 const countComments = {
-    MIN: 0,
-    MAX: 20,
+    MIN:0,
+    MAX:20,
 };
 
 const descriptions = [
@@ -100,11 +100,10 @@ function createPhoto (index) {
     }
 }
 
-const data = new Array(countObjects).fill(countObjects).map((e, index) => getOffer(index));
-const photo = new Array(countObjects).fill(countObjects).map((_, index) => createPhoto(index));
-const comments = new Array(commentId.MAX).fill(null).map((_, index) => commentsContent());
+const photo = new Array(countObjects).fill(countObjects).map((e, index) => getOffer(index));
+const comments = new Array(commentId.MAX).fill(null).map((_) => commentsContent());
 photo.forEach((e) => e.comments = Array.from({ length:getRandomNumber(countComments.MIN, countComments.MAX) }, commentsContent));
 
-const dataJson = { photo, comments, data}
+const dataJson = { photo, comments }
 
 export { dataJson }
