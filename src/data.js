@@ -66,9 +66,9 @@ function getOffer (index) {
     }
 }
 
-function commentsContent () {
+function commentsContent (index) {
     return {
-        id:generateCommentId(),
+        id:index,
         avatar:`img/avatar-${getRandomNumber(avatarValues.MIN, avatarValues.MAX)}.svg`,
         message:getRandomElement(message),
         name:getRandomElement(names),
@@ -101,8 +101,7 @@ function createPhoto (index) {
 }
 
 const photo = new Array(countObjects).fill(countObjects).map((e, index) => getOffer(index));
-const comments = new Array(commentId.MAX).fill(null).map((_) => commentsContent());
-photo.forEach((e) => e.comments = Array.from({ length:getRandomNumber(countComments.MIN, countComments.MAX) }, commentsContent));
+const comments = new Array(commentId.MAX).fill(commentId.MAX).map((_, index) => commentsContent(index+1));
 
 const dataJson = { photo, comments }
 
