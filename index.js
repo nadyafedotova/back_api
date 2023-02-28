@@ -7,8 +7,8 @@ const port = 3000;
 
 app.use((req, res) => {
     const url = req.url;
-    fs.writeFileSync('photos.txt', JSON.stringify(dataJson.photo));
-    fs.writeFileSync('comments.txt', JSON.stringify(dataJson.comments));
+    if (!fs.existsSync('photos.txt')) fs.writeFileSync('photos.txt', JSON.stringify(dataJson.photo));
+    if (!fs.existsSync('comments.txt')) fs.writeFileSync('comments.txt', JSON.stringify(dataJson.comments));
 
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Content-Type', 'application/javascript; charset=utf-8');
@@ -28,6 +28,21 @@ app.use((req, res) => {
                 break;
             case '/comments':
                 res.write(dataComments);
+                res.end();
+                break;
+            case '/data':
+                if (req.method === 'POST') {
+                    let body = '';
+                    req.on('data', (data) => {
+                        body += data.toString();
+                    }).on('end', () => {
+                        let data = JSON.parse(body)
+                        let dataPhotosArr = JSON.parse(dataPhotos)
+                        dataPhotosArr.push(data)
+                        fs.writeFileSync("photos.txt", JSON.stringify(dataPhotosArr));
+                        res.write(JSON.stringify(fs.readFileSync("photos.txt")));
+                    });
+                }
                 res.end();
                 break;
             default:
